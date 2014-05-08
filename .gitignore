@@ -4,3 +4,4 @@ testing
 .idea
 tmp
 temp
+/test/data/*.sqlite

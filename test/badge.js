@@ -6,6 +6,7 @@
 var app = require('../index'),
     kraken = require('kraken-js'),
     request = require('supertest'),
+    assert = require('assert'),
     data = require('./data/dummydata.json');
 
 var testInit = function (app) {
@@ -47,15 +48,73 @@ describe('/badge', function () {
         mock.close(done);
     });
 
-    it('should return collection', function (done) {
+    it('GET /badge should return collection', function (done) {
 
         request(mock)
             .get('/badge')
             .expect(200)
             .end(function(err, res){
-                console.log(res.body, res.headers);
+                var result = res.body;
+                assert.deepEqual(data.badge, result, "Response does not match");
                 done(err);
             });
     });
+
+    it('POST /badge should create a new badge', function (done) {
+        var newBadge = {
+            "name": "heyimnew",
+            "image": "yaimage.png"
+        };
+        request(mock)
+            .post('/badge')
+            .set('Content-Type', 'application/json')
+            .send(newBadge)
+            .end(function (err, res) {
+                var result = res.body
+                newBadge.id = result.id;
+                assert.deepEqual(newBadge, result, "Response does not match");
+                done(err);
+            });
+    });
+
+    it('GET /badge/id should return the badge', function (done) {
+        var expected = data.badge[0];
+        request(mock)
+            .get('/badge/' + expected.id)
+            .expect(200)
+            .end(function(err, res){
+                var result = res.body;
+                assert.deepEqual(expected, result, "Response does not match");
+                done(err);
+            });
+    });
+
+    it('PUT /badge/id should update the model', function (done) {
+        var expected = data.badge[0];
+        expected.name = "imchanged";
+        request(mock)
+            .put('/badge/' + expected.id)
+            .send(expected)
+            .expect(200)
+            .end(function(err, res){
+                var result = res.body;
+                assert.deepEqual(expected, result, "Response does not match");
+                done(err);
+            });
+
+    });
+
+    it('DELETE /badge/id should remove the model', function (done) {
+        var target = data.badge[0];
+        request(mock)
+            .delete('/badge/' + target.id)
+            .expect(204)
+            .end(function(err, res){
+                done(err);
+            });
+
+    });
+
+
 
 });

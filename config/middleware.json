@@ -6,7 +6,7 @@
             "503": "errors/503"
         },
         "appsec": {
-            "csrf": true,
+            "csrf": false,
             "csp": false,
             "p3p": false,
             "xframe": "SAMEORIGIN"

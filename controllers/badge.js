@@ -42,12 +42,21 @@ module.exports = function (app) {
     });
 
     app.put('/badge/:badge_id', function (req, res) {
-        req.badge.save(req.body, function (err) {
+        if (!req.body) {
+            res.send(400);
+            return;
+        }
+        var badge = req.badge;
+        Object.keys(req.body).forEach(function (key) {
+            badge[key] = req.body[key];
+        });
+
+        req.badge.save(function (err) {
             if (err) {
                 res.json(500, err);
                 return;
             }
-            res.send(200);
+            res.send(200, req.badge);
         });
     });
 

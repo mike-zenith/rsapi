@@ -16,7 +16,7 @@
     "adaro": "^0.1.5",
     "express": "~3.4.4",
     "kraken-js": "^0.7.0",
-    "migrate-orm2": "^1.2.9",
+    "migrate-orm2": "git://github.com/mike-zenith/node-migrate-orm2.git#patch-1",
     "nconf": "^0.6.8",
     "orm": "^2.1.8",
     "q": "^1.0.1"
@@ -31,6 +31,7 @@
     "grunt-contrib-requirejs": "^0.4.4",
     "grunt-copy-to": "0.0.10",
     "grunt-dustjs": "^1.2.1",
+    "grunt-env": "^0.4.1",
     "grunt-mocha-cli": "^1.8.0",
     "less": "^1.7.0",
     "makara": "^0.3.4",

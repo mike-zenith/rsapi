@@ -1,6 +1,6 @@
 {
 
     "orm": {
-        "uri": "sqlite://:memory:"
+        "uri": "sqlite://test/data/rsapi.test.sqlite"
     }
 }
