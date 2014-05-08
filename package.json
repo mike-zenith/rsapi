@@ -1,0 +1,41 @@
+{
+  "name": "rsapi",
+  "version": "0.0.1",
+  "description": "RisingStars Api",
+  "author": "Imre Juhasz <awe.zenith@gmail.com>",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com"
+  },
+  "dependencies": {
+    "adaro": "^0.1.5",
+    "express": "~3.4.4",
+    "kraken-js": "^0.7.0",
+    "migrate-orm2": "^1.2.9",
+    "nconf": "^0.6.8",
+    "orm": "^2.1.8",
+    "q": "^1.0.1"
+  },
+  "devDependencies": {
+    "dustjs-linkedin": "^2.3.4",
+    "grunt": "^0.4.4",
+    "grunt-config-dir": "^0.3.2",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-less": "^0.11.0",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-copy-to": "0.0.10",
+    "grunt-dustjs": "^1.2.1",
+    "grunt-mocha-cli": "^1.8.0",
+    "less": "^1.7.0",
+    "makara": "^0.3.4",
+    "mocha": "^1.17.0",
+    "sqlite3": "^2.2.3",
+    "supertest": "^0.8.2"
+  }
+}

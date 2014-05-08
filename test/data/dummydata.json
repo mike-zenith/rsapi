@@ -1,0 +1,52 @@
+{
+    "badge": [
+        {
+            "name": "Foo",
+            "image": "imfooimage",
+            "id": 3
+        },
+        {
+            "name": "Bar",
+            "image": "imbarimage",
+            "id": 4
+        }
+    ],
+    "user": [
+        {
+            "id": 1
+        },
+        {
+            "id": 2
+        }
+    ],
+    "currency": [
+        {
+            "name": "songs",
+            "type": "public",
+            "disabled": false
+        },
+        {
+            "name": "imdisabled",
+            "type": "othertype",
+            "disabled": true
+        },
+        {
+            "name": "logins",
+            "type": "public"
+        }
+    ],
+    "rule": [
+        {
+            "name": "rule#1",
+            "value": 5
+        },
+        {
+            "name": "rule#2",
+            "value": 100
+        },
+        {
+            "name": "rule#3",
+            "value": 8
+        }
+    ]
+}

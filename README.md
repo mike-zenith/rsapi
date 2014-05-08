@@ -1,0 +1,3 @@
+# rsapi
+
+RisingStars Api
