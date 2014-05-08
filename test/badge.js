@@ -22,7 +22,7 @@ var testInit = function (app) {
         }(i, data[i]));
     }
     app.before.push(function (req, res, next) {
-        res.on('end', function () {
+        res.on('close', function () {
             req.db.close();
         });
         next();
