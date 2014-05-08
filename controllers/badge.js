@@ -61,7 +61,7 @@ module.exports = function (app) {
     });
 
     app.delete('/badge/:badge_id', function (req, res) {
-        req.badge.delete(function (err) {
+        req.badge.remove(function (err) {
             if (err) {
                 res.json(500, err);
                 return;

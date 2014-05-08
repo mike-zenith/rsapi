@@ -107,9 +107,10 @@ describe('/badge', function () {
     it('DELETE /badge/id should remove the model', function (done) {
         var target = data.badge[0];
         request(mock)
-            .delete('/badge/' + target.id)
+            .del('/badge/' + target.id)
             .expect(204)
             .end(function(err, res){
+                console.log(err);
                 done(err);
             });
 
