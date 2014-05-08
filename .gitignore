@@ -2,3 +2,5 @@ node_modules
 testing
 .build
 .idea
+tmp
+temp
