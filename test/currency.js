@@ -11,7 +11,7 @@ var app = require('../index'),
     provider = require('./data/provider'),
     rawData = require('./data/dummydata.json');
 
-describe.only('/user/x/currency/y', function () {
+describe('/user/x/currency/y', function () {
 
     var mock,
         data = extend(true, {}, rawData);
