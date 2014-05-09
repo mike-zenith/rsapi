@@ -1,79 +1,17 @@
 'use strict';
 
-module.exports = function (app) {
-    app.param('badge_id', function (req, res, next, id) {
-        req.models.badge.get(id, function (err, record) {
-            if (err && ~err.toString().indexOf('ORMError')) {
-                if (err.code === 2) {
-                    res.send(404);
-                    next();
-                    return;
-                }
-                res.json(500, err);
-                next();
-                return;
-            }
-            if (err) {
-                res.json(500, err);
-                next();
-                return;
-            }
-            req.badge = record;
-            next();
-        });
-    });
+var Rest = require('../lib/controller/restful'),
+    opts;
 
-    app.get('/badge', function (req, res) {
-        req.models.badge.find(function (err, badges) {
-            if (err) {
-                res.send(500, err);
-                return;
-            }
-            res.json(badges);
-        });
-    });
-
-    app.post('/badge', function (req, res) {
-        req.models.badge.create(req.body, function (err, badge) {
-            if (err) {
-                res.send(500, err);
-                return;
-            }
-            res.send(badge);
-        });
-    });
-
-    app.get('/badge/:badge_id', function (req, res) {
-        res.json(req.badge);
-    });
-
-    app.put('/badge/:badge_id', function (req, res) {
-        if (!req.body) {
-            res.send(400);
-            return;
-        }
-        var badge = req.badge;
-        Object.keys(req.body).forEach(function (key) {
-            badge[key] = req.body[key];
-        });
-
-        req.badge.save(function (err) {
-            if (err) {
-                res.json(500, err);
-                return;
-            }
-            res.send(200, req.badge);
-        });
-    });
-
-    app.delete('/badge/:badge_id', function (req, res) {
-        req.badge.remove(function (err) {
-            if (err) {
-                res.json(500, err);
-                return;
-            }
-            res.send(204);
-        });
-    });
-
+opts = {
+    param: {
+        key: 'badge_id'
+    },
+    model: {
+        name: 'badge',
+        register: 'badge'
+    }
 };
+
+module.exports = Rest('/badge', opts)
+    .generate(['param:model', 'routes:item', 'routes:collection']);

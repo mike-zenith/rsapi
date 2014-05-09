@@ -1,7 +1,7 @@
 {
 
     "orm": {
-        "uri": "sqlite://test/data/rsapi.test.sqlite",
+        "uri": "sqlite://test/data/rsapi.test.sqlite?mode=memory&cache=shared",
         "settings": {
             "connection.pool": false,
             "connection.debug": true,

@@ -11,7 +11,7 @@ var app = require('../index'),
     provider = require('./data/provider'),
     rawData = require('./data/dummydata.json');
 
-describe('/user/x/currency/y', function () {
+describe.only('/user/x/currency/y', function () {
 
     var mock,
         data = extend(true, {}, rawData);
@@ -42,7 +42,7 @@ describe('/user/x/currency/y', function () {
             .expect(200)
             .end(function(err, res){
                 var result = res.body;
-                console.log(currencies, result);
+                console.log(result);
                 assert.deepEqual(currencies, result, "Response does not match");
                 done(err);
             });
@@ -56,6 +56,7 @@ describe('/user/x/currency/y', function () {
             .expect(200)
             .end(function(err, res){
                 var result = res.body;
+                console.log(result);
                 assert.deepEqual({}, result, "Response does not match");
                 done(err);
             });
