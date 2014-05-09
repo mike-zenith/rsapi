@@ -1,6 +1,13 @@
 {
 
     "orm": {
-        "uri": "sqlite://test/data/rsapi.test.sqlite"
+        "uri": "sqlite://test/data/rsapi.test.sqlite",
+        "settings": {
+            "connection.pool": false,
+            "connection.debug": true,
+            "instance.cache": false,
+            "instance.autoSave": false,
+            "instance.returnAllErrors": true
+        }
     }
 }

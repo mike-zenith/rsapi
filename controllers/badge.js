@@ -3,13 +3,20 @@
 module.exports = function (app) {
     app.param('badge_id', function (req, res, next, id) {
         req.models.badge.get(id, function (err, record) {
+            if (err && ~err.toString().indexOf('ORMError')) {
+                if (err.code === 2) {
+                    res.send(404);
+                    next();
+                    return;
+                }
+                res.json(500, err);
+                next();
+                return;
+            }
             if (err) {
                 res.json(500, err);
                 next();
-            }
-            if (!record) {
-                res.send(404);
-                next();
+                return;
             }
             req.badge = record;
             next();
@@ -17,13 +24,12 @@ module.exports = function (app) {
     });
 
     app.get('/badge', function (req, res) {
-        req.models.badge.all(function (err, badges) {
+        req.models.badge.find(function (err, badges) {
             if (err) {
-                console.log(err);
                 res.send(500, err);
                 return;
             }
-            res.send(badges);
+            res.json(badges);
         });
     });
 
@@ -38,7 +44,7 @@ module.exports = function (app) {
     });
 
     app.get('/badge/:badge_id', function (req, res) {
-            res.json(req.badge);
+        res.json(req.badge);
     });
 
     app.put('/badge/:badge_id', function (req, res) {

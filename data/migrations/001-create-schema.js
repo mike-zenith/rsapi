@@ -24,14 +24,14 @@
             activeFrom: { type: 'date', time: true },
             activeUntil: { type: 'date', time: true }
         },
-        'user_currency': {
-            currency_id: { type: 'integer', required: true },
+        'user_currencies': {
+            currencies_id: { type: 'integer', required: true },
             user_id: { type: 'integer', required: true },
             value: { type: 'integer', defaultValue: 0, required: true }
         },
-        'user_badge': {
-            badge_id: { type: 'number', required: true },
-            currency_id: { type: 'number', required: true },
+        'user_badges': {
+            badges_id: { type: 'number', required: true },
+            user_id: { type: 'number', required: true },
             date: { type: 'date', time: true }
         }
     },

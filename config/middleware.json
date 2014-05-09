@@ -28,8 +28,8 @@
         },
 
         "custom": {
-            "database": "path:./lib/middleware/database",
-            "outputdecorator": "path:./lib/middleware/outputdecorator"
+            "database": "path:./lib/middleware/database"
+            // "outputdecorator": "path:./lib/middleware/outputdecorator"
         }
     }
 }

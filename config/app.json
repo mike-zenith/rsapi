@@ -27,7 +27,8 @@
 //            }
             "connection.pool": true,
             "connection.debug": true,
-            "instance.cache": true,
+            "instance.cache": false,
+            "instance.autoFetch": false,
             "instance.autoSave": false,
             "instance.returnAllErrors": true
         }

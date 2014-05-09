@@ -23,30 +23,36 @@
         {
             "name": "songs",
             "type": "public",
-            "disabled": false
+            "disabled": false,
+            "id": 1
         },
         {
             "name": "imdisabled",
             "type": "othertype",
-            "disabled": true
+            "disabled": true,
+            "id": 2
         },
         {
             "name": "logins",
-            "type": "public"
+            "type": "public",
+            "id": 3
         }
     ],
-    "rule": [
+    "user_currencies": [
         {
-            "name": "rule#1",
-            "value": 5
-        },
-        {
-            "name": "rule#2",
+            "user_id": 1,
+            "currencies_id": 2,
             "value": 100
         },
         {
-            "name": "rule#3",
-            "value": 8
+            "user_id": 1,
+            "currencies_id": 3,
+            "value": 2
+        },
+        {
+            "user_id": 2,
+            "currencies_id": 1,
+            "value": 41
         }
     ]
 }

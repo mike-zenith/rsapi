@@ -7,35 +7,20 @@ var app = require('../index'),
     kraken = require('kraken-js'),
     request = require('supertest'),
     assert = require('assert'),
-    data = require('./data/dummydata.json');
-
-var testInit = function (app) {
-    for(var i in data) {
-        app.before.push(function (key, data) {
-            return function (req, res, next) {
-                var model = req.models[key];
-                model.clear(function () {
-                    model.create(data, function () {
-                        next();
-                    });
-                });
-            };
-        }(i, data[i]));
-    }
-    app.before.push(function (req, res, next) {
-        res.on('close', function () {
-            req.db.close();
-        });
-        next();
-    });
-};
+    extend = require('node.extend'),
+    provider = require('./data/provider'),
+    rawData = require('./data/dummydata.json');
 
 describe('/badge', function () {
 
-    var mock;
+    var mock,
+        data = extend(true, {}, rawData);
+
+    before(function () {
+        provider.load(app, data);
+    });
 
     beforeEach(function (done) {
-        testInit(app);
         kraken.create(app)
             .listen(function (err, server) {
                 mock = server;
@@ -49,13 +34,15 @@ describe('/badge', function () {
     });
 
     it('GET /badge should return collection', function (done) {
-
         request(mock)
             .get('/badge')
             .expect(200)
             .end(function(err, res){
-                var result = res.body;
-                assert.deepEqual(data.badge, result, "Response does not match");
+                if (err) {
+                    done(err);
+                    return;
+                }
+                assert.deepEqual(data.badge, res.body, "Response does not match");
                 done(err);
             });
     });
@@ -68,8 +55,13 @@ describe('/badge', function () {
         request(mock)
             .post('/badge')
             .set('Content-Type', 'application/json')
+            .expect(200)
             .send(newBadge)
             .end(function (err, res) {
+                if (err) {
+                    done(err);
+                    return;
+                }
                 var result = res.body
                 newBadge.id = result.id;
                 assert.deepEqual(newBadge, result, "Response does not match");
@@ -83,22 +75,27 @@ describe('/badge', function () {
             .get('/badge/' + expected.id)
             .expect(200)
             .end(function(err, res){
-                var result = res.body;
-                assert.deepEqual(expected, result, "Response does not match");
+                if (err) {
+                    done(err);
+                    return;
+                }
+                assert.deepEqual(expected, res.body, "Response does not match");
                 done(err);
             });
     });
 
     it('PUT /badge/id should update the model', function (done) {
-        var expected = data.badge[0];
-        expected.name = "imchanged";
+        var expected = extend(true, {}, data.badge[0], { name: "imchanged" });
         request(mock)
             .put('/badge/' + expected.id)
             .send(expected)
             .expect(200)
             .end(function(err, res){
-                var result = res.body;
-                assert.deepEqual(expected, result, "Response does not match");
+                if (err) {
+                    done(err);
+                    return;
+                }
+                assert.deepEqual(expected, res.body, "Response does not match");
                 done(err);
             });
 
@@ -110,12 +107,13 @@ describe('/badge', function () {
             .del('/badge/' + target.id)
             .expect(204)
             .end(function(err, res){
-                console.log(err);
+                if (err) {
+                    done(err);
+                    return;
+                }
                 done(err);
             });
 
     });
-
-
 
 });
