@@ -5,10 +5,8 @@ var Rest = require('../lib/controller/restful'),
 
 opts = {
     param: {
-        key: 'badge_id'
-    },
-    model: {
-        name: 'badge',
+        key: 'badge_id',
+        model: 'badge',
         register: 'badge'
     }
 };

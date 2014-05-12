@@ -34,7 +34,7 @@ describe('/user/x/currency/y', function () {
         mock.close(done);
     });
 
-    it('GET /user/x/currency should return collection', function (done) {
+    it.only('GET /user/x/currency should return collection', function (done) {
         var user = data.user[0].id,
             currencies = [ data.user_currencies[0], data.user_currencies[1] ];
         request(mock)

@@ -4,6 +4,7 @@
 var kraken = require('kraken-js'),
     orm = require('orm'),
     util = require('util'),
+    error = require('./lib/middleware/error'),
     middleware = require('./lib/service/middleware'),
     nconf = require('nconf'),
     app = {};
@@ -41,7 +42,7 @@ app.requestBeforeRoute = function requestBeforeRoute(server) {
 
 
 app.requestAfterRoute = function requestAfterRoute(server) {
-
+    server.use(error());
 };
 
 

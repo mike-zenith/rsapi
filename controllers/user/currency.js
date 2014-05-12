@@ -7,32 +7,11 @@ opts = {
     param: {
         key: 'user_currency',
         register: 'user_currency',
-        handler:  function (req, res, next, id) {
-            var conf = this.conf;
-            req.user.getCurrencies().find({ id: id }, function (err, record) {
-                if (err && ~err.toString().indexOf('ORMError')) {
-                    if (err.code === 2) {
-                        res.send(404);
-                        next();
-                        return;
-                    }
-                    res.json(500, err);
-                    next();
-                    return;
-                }
-                if (err) {
-                    res.json(500, err);
-                    next();
-                    return;
-                }
-                req[conf.model.register] = record;
-                next();
-            });
+        model: 'currency',
+        assoc: {
+            register: 'user',
+            method: 'getCurrencies'
         }
-    },
-    model: {
-        name: 'user',
-        register: 'user_register'
     },
     routes: {
         collection: {

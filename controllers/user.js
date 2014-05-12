@@ -5,10 +5,8 @@ var Rest = require('../lib/controller/restful'),
 
 opts = {
     param: {
-        key: 'user_id'
-    },
-    model: {
-        name: 'user',
+        key: 'user_id',
+        model: 'user',
         register: 'user'
     }
 };
