@@ -16,10 +16,10 @@
     "adaro": "^0.1.5",
     "express": "~3.4.4",
     "kraken-js": "^0.7.0",
-    "migrate-orm2": "git://github.com/mike-zenith/node-migrate-orm2.git#patch-1",
+    "migrate-orm2": "~1.2.11",
     "nconf": "^0.6.8",
     "node.extend": "^1.0.10",
-    "orm": "^2.1.9",
+    "orm": "^2.1.10",
     "q": "^1.0.1"
   },
   "devDependencies": {

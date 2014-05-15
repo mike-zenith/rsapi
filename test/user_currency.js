@@ -29,20 +29,19 @@ describe('/user/x/currency/y', function () {
             });
     });
 
-
     afterEach(function (done) {
         mock.close(done);
     });
 
-    it.only('GET /user/x/currency should return collection', function (done) {
+    it('GET /user/x/currency should return collection', function (done) {
         var user = data.user[0].id,
             currencies = [ data.user_currencies[0], data.user_currencies[1] ];
         request(mock)
             .get('/user/' + user + '/currency')
             .expect(200)
             .end(function(err, res){
+                debugger;
                 var result = res.body;
-                console.log(result);
                 assert.deepEqual(currencies, result, "Response does not match");
                 done(err);
             });
@@ -56,7 +55,6 @@ describe('/user/x/currency/y', function () {
             .expect(200)
             .end(function(err, res){
                 var result = res.body;
-                console.log(result);
                 assert.deepEqual({}, result, "Response does not match");
                 done(err);
             });

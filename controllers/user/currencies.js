@@ -5,31 +5,12 @@ var Rest = require('../../lib/controller/restful'),
 
 opts = {
     param: {
-        key: 'user_currency',
-        register: 'user_currency',
+        key: 'user_currencies',
+        register: 'user_currencies',
         model: 'currency',
         assoc: {
             register: 'user',
             method: 'getCurrencies'
-        }
-    },
-    routes: {
-        collection: {
-            handler: {
-                GET: function (req, res) {
-                    req.user.getCurrencies(function (err, records) {
-                        if (err && ~err.toString().indexOf('ORMError')) {
-                            if (err.code === 2) {
-                                return res.send(404);
-                            }
-                        }
-                        if (err) {
-                            return res.json(500, err);
-                        }
-                        return res.json(records);
-                    });
-                }
-            }
         }
     }
 };

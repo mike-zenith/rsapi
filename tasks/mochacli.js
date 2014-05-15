@@ -11,7 +11,9 @@ module.exports = function mochacli(grunt) {
 	        timeout: 6000,
 	        'check-leaks': true,
 	        ui: 'bdd',
+            debug: true,
 	        reporter: 'nyan',
+            globals: ['i']
 	    },
         filesRaw: 'test/*.js'
 	};

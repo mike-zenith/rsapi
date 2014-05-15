@@ -29,7 +29,6 @@
 
         "custom": {
             "database": "path:./lib/middleware/database"
-            // "outputdecorator": "path:./lib/middleware/outputdecorator"
         }
     }
 }
