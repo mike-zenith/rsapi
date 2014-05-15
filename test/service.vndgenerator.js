@@ -5,12 +5,14 @@
 
 var assert = require('assert'),
     extend = require('node.extend'),
+    util = require('util'),
+    diff = require('deep-diff'),
 
     service = require('../lib/service/vndgenerator'),
     orm = require('orm'),
     q = require('q');
 
-describe.only('service.vndgenerator', function () {
+describe('service.vndgenerator', function () {
 
     var mock, conn, connDfd;
 
@@ -257,35 +259,37 @@ describe.only('service.vndgenerator', function () {
         });
     });
 
-    it('.skeleton : generates when items are given, uses href', function (done) {
+    it('.skeleton : items are given, uses href', function (done) {
         var input = {
-                "collection": {
-                    "href": "http://href",
-                    "items": [
-                        {
-                            name: "foo"
-                        },
-                        {
-                            name: "bar"
-                        }
-                    ]
-                }
+                "href": "http://href",
+                "items": [
+                    {
+                        name: "foo"
+                    },
+                    {
+                        name: "bar"
+                    }
+                ]
             },
             expected = {
                 "collection": {
+                    "version": "1.0",
                     "href": "http://href",
+                    "links": [],
                     "items": [
                         {
                             "href" : "http://href/foo",
                             "data" : [
                                 {"name" : "name", "value" : "foo", "prompt" : "name"}
-                            ]
+                            ],
+                            links: []
                         },
                         {
                             "href" : "http://href/bar",
                             "data" : [
                                 {"name" : "name", "value" : "bar", "prompt" : "name"}
-                            ]
+                            ],
+                            links: []
                         }
                     ],
                     "queries": [],
@@ -295,9 +299,9 @@ describe.only('service.vndgenerator', function () {
                         ]
                     }
                 }
-            };
-
-        assert.deepEqual(expected, mock.skeleton());
+            },
+            result = mock.skeleton(input);
+        assert.deepEqual(expected, result);
         done();
     });
 
@@ -317,6 +321,7 @@ describe.only('service.vndgenerator', function () {
                 },
                 input = {
                     href: "http://foo",
+                    itemHref: "http://foo/user/:id",
                     items: []
                 },
                 expected = {
@@ -331,8 +336,8 @@ describe.only('service.vndgenerator', function () {
                                     {name: "id", value: 1, prompt: "id"}
                                 ],
                                 links: [
-                                    {rel: "image", href: "http://user/1/image", prompt: "image"},
-                                    {rel: "badge", href: "http://user/1/badge", prompt: "badge"}
+                                    {rel: "image", href: "http://foo/user/1/image", prompt: "image"},
+                                    {rel: "badge", href: "http://foo/user/1/badge", prompt: "badge"}
                                 ]
                             },
                             {
@@ -341,13 +346,17 @@ describe.only('service.vndgenerator', function () {
                                     {name: "id", value: 2, prompt: "id"}
                                 ],
                                 links: [
-                                    {rel: "image", href: "http://user/1/image", prompt: "image"},
-                                    {rel: "badge", href: "http://user/1/badge", prompt: "badge"}
+                                    {rel: "image", href: "http://foo/user/2/image", prompt: "image"},
+                                    {rel: "badge", href: "http://foo/user/2/badge", prompt: "badge"}
                                 ]
                             }
                         ],
                         "queries": [],
-                        "template": []
+                        "template": {
+                            data: [
+                                {name: "id", value: "", prompt: "id"}
+                            ]
+                        }
                     }
                 },
                 modelOne = db.define('image', schemaOne),
@@ -360,7 +369,8 @@ describe.only('service.vndgenerator', function () {
             model.sync(function () {
                 model.create([{ id: 1}, {id: 2}], function (err, record) {
                     input.items = record;
-                    assert.deepEqual(expected, mock.skeleton(input));
+                    var result = mock.skeleton(input);
+                    assert.deepEqual(expected, result);
                     done();
                 });
             });

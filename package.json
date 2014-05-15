@@ -23,6 +23,7 @@
     "q": "^1.0.1"
   },
   "devDependencies": {
+    "deep-diff": "^0.1.7",
     "dustjs-helpers": "^1.2.0",
     "dustjs-linkedin": "^2.3.4",
     "grunt": "^0.4.4",
