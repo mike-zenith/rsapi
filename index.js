@@ -11,6 +11,8 @@ var kraken = require('kraken-js'),
 
 
 app.before = [];
+app.after = [];
+app.config = [];
 
 app.configure = function configure(nconf, next) {
     // Async method run on startup.
@@ -19,6 +21,12 @@ app.configure = function configure(nconf, next) {
     Object.keys(settings).forEach(function (i) {
         orm.settings.set(i, settings[i]);
     });
+
+    if (app.config) {
+        app.config.forEach(function (cb) {
+            cb(nconf);
+        });
+    }
 
     next(null);
 };
@@ -43,6 +51,11 @@ app.requestBeforeRoute = function requestBeforeRoute(server) {
 
 app.requestAfterRoute = function requestAfterRoute(server) {
     server.use(error());
+    if (app.after) {
+        app.after.forEach(function (el) {
+            server.use(el);
+        });
+    }
 };
 
 

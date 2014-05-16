@@ -8,11 +8,11 @@ var assert = require('assert'),
     util = require('util'),
     diff = require('deep-diff'),
 
-    service = require('../lib/service/vndgenerator'),
+    service = require('../lib/service/vndcollection'),
     orm = require('orm'),
     q = require('q');
 
-describe('service.vndgenerator', function () {
+describe('service.vndcollection', function () {
 
     var mock, conn, connDfd;
 
