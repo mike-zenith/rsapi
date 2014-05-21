@@ -11,17 +11,19 @@ var app = require('../index'),
     provider = require('./data/provider'),
     rawData = require('./data/dummydata.json');
 
-describe('/user/x/currency/y', function () {
+describe('/user/x/currency[/y]', function () {
 
     var mock,
         data = extend(true, {}, rawData);
 
     before(function () {
+        app.before = [];
+        app.config = [];
+        app.after = [];
         provider.load(app, data);
     });
 
     beforeEach(function (done) {
-
         kraken.create(app)
             .listen(function (err, server) {
                 mock = server;

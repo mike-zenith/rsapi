@@ -17,6 +17,9 @@ describe('/badge', function () {
         data = extend(true, {}, rawData);
 
     before(function () {
+        app.before = [];
+        app.config = [];
+        app.after = [];
         provider.load(app, data);
     });
 
