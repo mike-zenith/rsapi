@@ -6,7 +6,7 @@ RisingStars Api
 
 This is a private(ish) repo.
 
-### Getting strated
+## Getting strated
 
 ```
 - Install Node.js [NodeWin also available]
@@ -31,22 +31,22 @@ Create / change env-specific settings
 
 Configuration is based on kraken's nconf integration, it first loads the base config (config/app.json) then looks for the env specific one (config/app-test.json) .
 
-### Used modules, documentations
+## Used modules, documentations
 
-#### yo, aka yeoman
+### yo, aka yeoman
 [yeoman.io](http://yeoman.io/)
 ```
 # yo is an app scaffolding module, it generates grunt files and creates the requested files / directories based on cli args
 ```
 
-#### kraken.js
+### kraken.js
 Full stack framework by paypal
 
 [krakenjs.com](http://krakenjs.com/)
 
 [Github source](https://github.com/krakenjs/kraken-js)
 
-#### generator-kraken
+### generator-kraken
 [generator-kraken](https://www.npmjs.org/package/generator-kraken)
 
 Yeoman generator for krakenjs
@@ -70,7 +70,7 @@ $ yo kraken:locale myFile [myCountry myLang] Generates a new content bundle name
 
 ```
 
-#### Grunt 
+### Grunt 
 Grunt is a js task-runner
 
 [gruntjs.com](http://gruntjs.com/)
@@ -104,7 +104,7 @@ Creates a migration file
 
 ```
 
-#### ORM
+### ORM
 The currently used orm is called node-orm2
 
 [Github, node-orm2](https://github.com/dresende/node-orm2)
@@ -112,7 +112,7 @@ The currently used orm is called node-orm2
 [Github, wiki](https://github.com/dresende/node-orm2/wiki)
 
 
-#### Migration
+### Migration
 Migrations are used for db versioning
 
 [Github, node-migrate-orm2](https://github.com/locomote/node-migrate-orm2)
@@ -136,7 +136,7 @@ General optional parameters:
 
 ```
 
-#### Mocha , Mocha-cli
+### Mocha , Mocha-cli
 Mocha is our test-runner. It provides basic functionality over tdd / bdd tests.
 
 [Mocha homepage](http://visionmedia.github.io/mocha/)
@@ -156,15 +156,17 @@ $ npm test
 ```
 
 
-### How to / FAQ
+## How to / FAQ
 
-- What am i supposed to do with this?
+### What am i supposed to do with this?
+
 This is a private repo, only open for a short period of time, if you have really asked this question, you should leave.
 
-- I want to create a...
+### I want to create a...
+
 One should not create anything without TESTS!
 That does not mean that you have to develop in TDD/BDD/whateverDD, that means
-you should at least positively test your code!
+you should at least test your code in an optimistic / positive way!
 
 Create a js file into test/ and name it properly.
 ```
@@ -177,8 +179,9 @@ and/or check orm2 tests
 - anything else: test it individually (unit test) with mocks / fakes and test the implementation in BDD style
 ```
 
-- I want to make a database change, what should i do?
-Define the reason why you need database update, make it short, use it as the name of your update script.
+### I want to make a database change, what should i do?
+
+Define the reason why you need a database update, make it short, use it as the name of your update script.
 Im gonna call it 'email-index' in the next example
 
 ```
@@ -241,7 +244,7 @@ $ grunt migrate:up --environment test
 
 ```
 
-- I messed up the database change, want to rollback, what should i do?
+### I messed up the database change, want to rollback, what should i do?
 Did you commit / push it?
 ```
 $ grunt migrate:down --file xxx --environment yyy
@@ -249,7 +252,17 @@ Where xxx is the migration script you want to rollback, yyy is the environment f
 ```
 If you did not, rollback it and delete the file.
 
-- How should i create a new controller?
+### How should i create a new controller?
+
+If it is not a REST or some special controller, you should use generator-kraken.
+Read the corresponding section about it and use:
+
+```
+$ yo kraken:controller myController
+
+```
+
+OR
 
 Create a file under *controllers* directory and name it properly.
 ```js
@@ -260,9 +273,11 @@ module.exports = function (app) {
 
 }
 ```
+
 Our Kraken framework built on top of express.js and uses
-[express-enrouten](https://github.com/krakenjs/express-enrouten) middleware for controller.
+[express-enrouten](https://github.com/krakenjs/express-enrouten) middleware for loading controllers.
 You might wanna check out that page for more information, but the basic public methods of app are the same:
+
 
 ```js
 // controllers/[your-proper-name].js
@@ -279,7 +294,8 @@ module.exports = function (app) {
 }
 ```
 
-- I need a REST controller with CRUD model operations
+### I need a REST controller with CRUD model operations
+
 There is a REST generator which creates the requested methods when the node application
 starts.
 
@@ -303,3 +319,6 @@ opts = {
 module.exports = Rest('/user', opts)
     .generate(['param:model', 'routes:item', 'routes:collection']);
 ```
+
+
+
