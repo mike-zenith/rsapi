@@ -34,7 +34,7 @@ Configuration is based on kraken's nconf integration, it first loads the base co
 ### Used modules, documentations
 
 #### yo, aka yeoman
-[Url](http://yeoman.io/)
+[yeoman.io](http://yeoman.io/)
 ```
 # yo is an app scaffolding module, it generates grunt files and creates the requested files / directories based on cli args
 ```
@@ -42,12 +42,12 @@ Configuration is based on kraken's nconf integration, it first loads the base co
 #### kraken.js
 Full stack framework by paypal
 
-[Url](http://krakenjs.com/)
+[krakenjs.com](http://krakenjs.com/)
 
-[Github](https://github.com/krakenjs/kraken-js)
+[Github source](https://github.com/krakenjs/kraken-js)
 
 #### generator-kraken
-[Url](https://www.npmjs.org/package/generator-kraken)
+[generator-kraken](https://www.npmjs.org/package/generator-kraken)
 
 Yeoman generator for krakenjs
 ```
@@ -73,7 +73,7 @@ $ yo kraken:locale myFile [myCountry myLang] Generates a new content bundle name
 #### Grunt 
 Grunt is a js task-runner
 
-[Url](http://gruntjs.com/)
+[gruntjs.com](http://gruntjs.com/)
 
 We are using it to run tests, migrations and build the application.
 
@@ -107,6 +107,199 @@ Creates a migration file
 #### ORM
 The currently used orm is called node-orm2
 
-[Github, homepage](https://github.com/dresende/node-orm2)
+[Github, node-orm2](https://github.com/dresende/node-orm2)
 
-[Wiki](https://github.com/dresende/node-orm2/wiki)
+[Github, wiki](https://github.com/dresende/node-orm2/wiki)
+
+
+#### Migration
+Migrations are used for db versioning
+
+[Github, node-migrate-orm2](https://github.com/locomote/node-migrate-orm2)
+
+How to use:
+```
+$ grunt migrate:generate myUpdate
+Creates an update script with 'up' and 'down' part and places it into data/migrations/
+
+$ grunt migrate:up [--file xxx] [--environment env]
+Runs migration tasks in up/commit/forward direction from the previously stored db version.
+After a successful run, it updates the db version.
+
+$ grunt migrate:down [--file xxx] [--environment env]
+Runs migration tasks in down/rollback/backward direction from the previously stored db version.
+After a successful run, it updates the db version.
+
+General optional parameters:
+--file xxx only run the specified migration script
+--environment env run the migration in the specified environment
+
+```
+
+#### Mocha , Mocha-cli
+Mocha is our test-runner. It provides basic functionality over tdd / bdd tests.
+
+[Mocha homepage](http://visionmedia.github.io/mocha/)
+[Grunt task source](https://github.com/Rowno/grunt-mocha-cli)
+
+The tests can be found at test/*. Currently it does not use sub-directories
+so you are safe to store fakes / stubs / mocks there.
+
+```
+$ grunt mochacli
+Runs the tests only without jshinting and environmental settings.
+One should not use it to test his code, the proper way is:
+
+$ grunt test
+OR
+$ npm test
+```
+
+
+### How to / FAQ
+
+- What am i supposed to do with this?
+This is a private repo, only open for a short period of time, if you have really asked this question, you should leave.
+
+- I want to create a...
+One should not create anything without TESTS!
+That does not mean that you have to develop in TDD/BDD/whateverDD, that means
+you should at least positively test your code!
+
+Create a js file into test/ and name it properly.
+```
+If it is a:
+- controller: behaviour test / end-to-end test it at least and it must describe a use-case
+- service: behaviour / unit test with specific use cases, unit tests preferred
+- middleware: behaviour with fake controller
+- model: models are not used individually, implement a use case into a (fake) controller and jump to 'controller' section
+and/or check orm2 tests
+- anything else: test it individually (unit test) with mocks / fakes and test the implementation in BDD style
+```
+
+- I want to make a database change, what should i do?
+Define the reason why you need database update, make it short, use it as the name of your update script.
+Im gonna call it 'email-index' in the next example
+
+```
+$ grunt migrate:up myUpdate
+Creates the migration file into date/migrations/xxx-email-index.js
+```
+
+Open it in your favourite IDE, edit the up and down parts:
+
+```js
+/* date/migrations/xxx-email-index.js
+
+Read [this page](https://github.com/locomote/node-migrate-orm2).
+Reachable methods under *this*:
+
+createTable
+dropTable
+addColumn
+dropColumn
+addIndex
+dropIndex
+addPrimaryKey
+dropPrimaryKey
+addForeignKey
+dropForeignKey
+
+*/
+exports.up = function (next) {
+    this.addIndex('i_username_email', {
+        table: 'user',
+        columns: ['username', 'email'],
+        unique: true
+    }, next);
+};
+
+exports.down = function (next) {
+    this.dropIndex('i_username_email');
+};
+
+```
+
+If you have filled *up* and *down* parts, you may create another migration or
+you can run them:
+
+```
+$ grunt migrate:up
+Runs all the remaining migrations up
+
+OR
+
+$ grunt migrate:up --file xxx-email-index.js
+
+OR
+
+$ grunt migrate:up --environment dev
+
+OR
+
+$ grunt migrate:up --environment test
+
+```
+
+- I messed up the database change, want to rollback, what should i do?
+Did you commit / push it?
+```
+$ grunt migrate:down --file xxx --environment yyy
+Where xxx is the migration script you want to rollback, yyy is the environment flag
+```
+If you did not, rollback it and delete the file.
+
+- How should i create a new controller?
+
+Create a file under *controllers* directory and name it properly.
+```js
+// controllers/[your-proper-name].js
+'use strict';
+
+module.exports = function (app) {
+
+}
+```
+Our Kraken framework built on top of express.js and uses
+[express-enrouten](https://github.com/krakenjs/express-enrouten) middleware for controller.
+You might wanna check out that page for more information, but the basic public methods of app are the same:
+
+```js
+// controllers/[your-proper-name].js
+'use strict';
+
+module.exports = function (app) {
+    app.get('/my-best-url/:id', function (req, res, id) {
+        // do something with id
+
+        // send the response
+        res.send(output, 200);
+        // or res.json , etc.
+    });
+}
+```
+
+- I need a REST controller with CRUD model operations
+There is a REST generator which creates the requested methods when the node application
+starts.
+
+Currently it is under heavy development and subject to change.
+
+Example:
+```js
+'use strict';
+
+var Rest = require('../lib/controller/restful'),
+    opts;
+
+opts = {
+    param: {
+        key: 'user_id',
+        model: 'user',
+        register: 'user'
+    }
+};
+
+module.exports = Rest('/user', opts)
+    .generate(['param:model', 'routes:item', 'routes:collection']);
+```
