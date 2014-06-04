@@ -13,4 +13,13 @@ module.exports = function (app) {
         s.send(opts);
     });
 
+    app.get('/1', function (q,s) {
+        s.send();
+    });
+
+    app.get('/2', function (q,s) {
+        s.send({ foo: 'bar' });
+    });
+
+
 };

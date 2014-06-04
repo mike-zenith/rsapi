@@ -3,6 +3,7 @@
 module.exports = function (db) {
 
     var User = db.define('user', {
+        credits: { type: 'integer', size: 4, defaultValue: 0}
     }, {
         methods: {
         }
@@ -17,6 +18,10 @@ module.exports = function (db) {
     User.hasMany(
         'badges',
         db.models.badge,
-        { date: {type: 'date', time: true} },
+        {
+            date: {type: 'date', time: true},
+            claimed: {type: 'boolean', defaultValue: false},
+            claimed_date: {type: 'date', time: true}
+        },
         { reverse: 'users'});
 };

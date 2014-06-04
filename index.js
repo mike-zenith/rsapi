@@ -2,70 +2,14 @@
 
 
 var kraken = require('kraken-js'),
-    orm = require('orm'),
-    util = require('util'),
-    error = require('./lib/middleware/error'),
-    middleware = require('./lib/service/middleware'),
-    nconf = require('nconf'),
-    app = {};
+    app = require('express')(),
+    options = require('./lib/spec')(app),
+    port = process.env.PORT || 8001;
 
+app.use(kraken(options));
 
-app.before = [];
-app.after = [];
-app.config = [];
-
-app.configure = function configure(nconf, next) {
-    // Async method run on startup.
-    var settings = nconf.get('orm:settings');
-
-    Object.keys(settings).forEach(function (i) {
-        orm.settings.set(i, settings[i]);
-    });
-
-    if (app.config) {
-        app.config.forEach(function (cb) {
-            cb(nconf);
-        });
+app.listen(port, function (err) {
+    if (err) {
+        console.error(err.stack);
     }
-
-    next(null);
-};
-
-
-app.requestStart = function requestStart(server) {
-    // Run before most express middleware has been registered.
-};
-
-
-app.requestBeforeRoute = function requestBeforeRoute(server) {
-
-    middleware(nconf.get('middleware:custom'), server);
-
-    if (app.before) {
-        app.before.forEach(function (el) {
-            server.use(el);
-        });
-    }
-};
-
-
-app.requestAfterRoute = function requestAfterRoute(server) {
-    server.use(error());
-    if (app.after) {
-        app.after.forEach(function (el) {
-            server.use(el);
-        });
-    }
-};
-
-
-if (require.main === module) {
-    kraken.create(app).listen(function (err, server) {
-        if (err) {
-            console.error(err.stack);
-        }
-    });
-}
-
-
-module.exports = app;
+});

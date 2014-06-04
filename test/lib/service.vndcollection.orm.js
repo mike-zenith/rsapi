@@ -6,11 +6,11 @@
 var assert = require('assert'),
     extend = require('node.extend'),
 
-    service = require('../lib/service/vndcollection/orm'),
+    service = require('../../lib/service/vndcollection/orm'),
     orm = require('orm'),
     q = require('q');
 
-describe('service.vndcollection.orm', function () {
+describe('#lib/service/vndcollection/orm', function () {
 
     var mock, conn, connDfd;
 

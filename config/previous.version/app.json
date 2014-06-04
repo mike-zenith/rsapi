@@ -4,7 +4,7 @@
 
     "orm": {
         "modelsPath": "path:./models/orm",
-        "uri": "mysql://root:risingstars1234@localhost/rsapi",
+        "connect": "mysql://root:risingstars1234@localhost/rsapi?debug=true",
         "settings": {
 //            properties : {
 //                primary_key     : "id",

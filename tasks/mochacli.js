@@ -8,13 +8,37 @@ module.exports = function mochacli(grunt) {
 	// Options
 	return {
 	    options: {
-	        timeout: 6000,
+	        timeout: 2000,
+            colors: true,
+            recursive: false,
 	        'check-leaks': true,
 	        ui: 'bdd',
             debug: true,
-	        reporter: 'nyan',
-            globals: ['i']
+            'debug-brk': false,
+	        reporter: 'spec',
+            files: ['test/*.js', 'test/lib/*.js']
 	    },
-        filesRaw: 'test/*.js'
+        spec: {
+            options: {
+                reporter: 'spec'
+            }
+        },
+        nyan: {
+            options: {
+                reporter: 'nyan'
+            }
+        },
+        min: {
+            options: {
+                reporter: 'min'
+            }
+        },
+        quiet: {
+            options: {
+                repoter: 'min',
+                quiet: true
+            }
+        }
+
 	};
 };

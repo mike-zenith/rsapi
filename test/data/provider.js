@@ -4,11 +4,13 @@ var timer = require('timers'),
     util = require('util'),
     extend = require('node.extend');
 
-function middleware (data, progress, loaded) {
+function middleware (data) {
     var keys = Object.keys(data),
         len = 0,
         err = null,
-        cntr = 0;
+        cntr = 0,
+        progress = false,
+        loaded = false;
 
     keys.forEach(function (l) {
         if (util.isArray(data[l])) {
@@ -20,18 +22,20 @@ function middleware (data, progress, loaded) {
             return next();
         }
 
-        var to, cb;
+        var cb, db;
 
         if (progress) {
-            to = timer.setTimeout(function () {
-                if (loaded) {
-                    timer.clearTimeout(to);
-                    next();
-                }
-            },10);
             return;
         }
         progress = true;
+
+        if (req.db && req.db.length) {
+            db = req.db[Object.keys(req.db)[0]].driver;
+        } else if(req.db && req.db.clear) {
+            db = req.db;
+        } else if (req.db && req.db.driver) {
+            db = req.db.driver;
+        }
 
         cb = function (e) {
             cntr ++;
@@ -47,18 +51,7 @@ function middleware (data, progress, loaded) {
         };
 
         keys.forEach(function (key) {
-            var db;
             if (~key.indexOf('_')) {
-                if (req.db.length) {
-                    db = req.db[Object.keys(req.db)[0]].driver;
-                } else if(req.db && req.db.clear) {
-                    db = req.db;
-                } else if (req.db && req.db.driver) {
-                    db = req.db.driver;
-                } else {
-                    cb();
-                    return;
-                }
                 db.clear(key, (function (key, rows) {
                     return function (err) {
                         if (err) {
@@ -89,12 +82,30 @@ function middleware (data, progress, loaded) {
     }
 }
 
-
-module.exports = {
-    load: function (app, rawData) {
-        var loaded = false,
-            progress = false;
-
-        app.before.push(middleware(extend(true, {}, rawData), progress, loaded));
+var Provider = {
+    middleware: middleware,
+    onconfig: function (app, spec, data_) {
+        var data = extend(true, {}, data_);
+        return function (config, next) {
+            spec(app).onconfig(config, function (err, config) {
+                if (err) {
+                    return next(err, config);
+                }
+                console.log(config.get('path'));
+                config.set('middleware:dummydataprovider', {
+                    "enabled": true,
+                    "priority": 200,
+                    "module": {
+                        "name": process.cwd() + "/test/data/provider",
+                        "method": "middleware",
+                        "arguments": [ data ]
+                    }
+                });
+                next(null, config);
+            });
+        }
     }
 };
+
+
+module.exports = Provider;

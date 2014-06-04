@@ -28,7 +28,8 @@
         },
 
         "custom": {
-            "database": "path:./lib/middleware/database"
+            "database": "path:./lib/middleware/database",
+            "vndcollection": "path:./lib/middleware/vndcollection"
         }
     }
 }

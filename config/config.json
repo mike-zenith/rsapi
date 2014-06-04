@@ -1,0 +1,134 @@
+{
+    "express": {
+        "x-powered-by": false,
+        "view cache": false,
+        "view engine": "js",
+        "views": "path:./.build/templates"
+    },
+
+    "api": {
+        "version": "1.2"
+    },
+
+    "view engines": {
+        "js": {
+            "module": "engine-munger",
+            "renderer": {
+                "method": "js",
+                "arguments": [
+                    { "cache": true },
+                    {
+                        "views": "config:express.views",
+                        "view engine": "config:express.view engine",
+                        "i18n": "config:i18n"
+                    }
+                ]
+            }
+        }
+    },
+
+    "i18n": {
+        "contentPath": "path:./locales",
+        "fallback": "en-US"
+    },
+
+    "database": {
+        "modelsPath": "path:./models/orm",
+        "connect": "mysql://root:risingstars1234@localhost/rsapi?debug=true",
+        "settings": {
+            "connection.pool": true,
+            "connection.debug": true,
+            "instance.cache": false,
+            "instance.autoFetch": false,
+            "instance.autoSave": false,
+            "instance.returnAllErrors": true
+        }
+    },
+
+    "errorhandler": {
+        "adapter": "console",
+        "arguments": [""]
+    },
+
+    "middleware": {
+
+        "appsec": {
+            "enabled": false,
+            "priority": 110,
+            "module": {
+                "name": "lusca",
+                "arguments": [
+                    {
+                        "csrf": true,
+                        "xframe": "SAMEORIGIN",
+                        "p3p": false,
+                        "csp": false
+                    }
+                ]
+            }
+        },
+
+        "static": {
+            "module": {
+                "arguments": [ "path:./.build" ]
+            }
+        },
+
+        "router": {
+            "module": {
+                "arguments": [{ "directory": "path:./controllers" }]
+            }
+        },
+
+        "fileNotFound": {
+            "enabled": true,
+            "priority": 130,
+            "module": {
+                "name": "kraken-js/middleware/404",
+                "arguments": [ "errors/404" ]
+            }
+        },
+
+        "serverError": {
+            "enabled": true,
+            "priority": 140,
+            "module": {
+                "name" : "kraken-js/middleware/500",
+                "arguments": [ "errors/500" ]
+            }
+        },
+
+        "database": {
+            "enabled": true,
+            "module": {
+                "name": "path:./lib/middleware/database",
+                "arguments": ["config:database"]
+            }
+        },
+
+        "vndcollection": {
+            "enabled": true,
+            "module": {
+                "name": "path:./lib/middleware/vndcollection"
+            }
+        },
+
+        "errorlogger": {
+            "enabled": true,
+            "priority": 0,
+            "module": {
+                "name": "path:./lib/middleware/error",
+                "arguments": [ "config:errorhandler"]
+            }
+        },
+
+        "overwriteroute": {
+            "enabled": true,
+            "module": {
+                "name": "path:./lib/middleware/overwriteroute"
+            }
+        }
+
+    }
+
+}

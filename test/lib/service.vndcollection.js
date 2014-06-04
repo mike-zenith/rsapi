@@ -8,11 +8,11 @@ var assert = require('assert'),
     util = require('util'),
     diff = require('deep-diff'),
 
-    service = require('../lib/service/vndcollection'),
+    service = require('../../lib/service/vndcollection'),
     orm = require('orm'),
     q = require('q');
 
-describe('service.vndcollection', function () {
+describe('#lib/service/vndcollection', function () {
 
     var mock, conn, connDfd;
 
@@ -215,6 +215,7 @@ describe('service.vndcollection', function () {
 
     it('.itemSkeleton : generates skeleton from orm record', function (done) {
         conn().done(function (db) {
+            debugger;
             var schemaUser = {
                     id: {
                         type: 'serial',
@@ -241,18 +242,25 @@ describe('service.vndcollection', function () {
                         {rel: "badge", href: "http://user/1/badge", prompt: "badge"}
                     ]
                 },
-                modelOne = db.define('image', schemaOne),
-                modelTwo = db.define('badge', schemaOne),
-                model = db.define('user', schemaUser);
+                modelOne,
+                modelTwo,
+                model;
+
+            modelOne = db.define('image', schemaOne);
+            modelTwo = db.define('badge', schemaOne);
+            model = db.define('user', schemaUser);
 
             model.hasOne('image', modelOne);
             model.hasMany('badge', modelTwo, { date: {type: 'date'} });
 
-            model.sync(function () {
+            db.sync(function () {
                 model.create({ id: 1}, function (err, record) {
+                    if (err) {
+                        return done(err);
+                    }
                     input.items = record;
                     assert.deepEqual(expected, mock.itemSkeleton(input));
-                    done();
+                    done(err);
                 });
             });
 

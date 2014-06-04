@@ -3,65 +3,88 @@
 'use strict';
 
 
-var app = require('../index'),
-    kraken = require('kraken-js'),
+var kraken = require('kraken-js'),
+    express = require('express'),
     request = require('supertest'),
+    spec = require('../lib/spec'),
     assert = require('assert'),
     extend = require('node.extend'),
-    provider = require('./data/provider'),
     rawData = require('./data/dummydata.json');
 
-describe('/user/x/currency[/y]', function () {
+describe('Location: /user/:id/currency', function () {
 
-    var mock,
+    var app,
+        mock,
         data = extend(true, {}, rawData);
 
-    before(function () {
-        app.before = [];
-        app.config = [];
-        app.after = [];
-        provider.load(app, data);
+    beforeEach(function (done) {
+        app = express();
+        app.on('start', done);
+        app.use(kraken({
+            basedir: process.cwd(),
+            onconfig: spec(app).onconfig
+        }));
+
+        mock = app.listen(1337);
     });
 
-    beforeEach(function (done) {
-        kraken.create(app)
-            .listen(function (err, server) {
-                mock = server;
-                done(err);
-            });
-    });
 
     afterEach(function (done) {
         mock.close(done);
     });
 
-    it('GET /user/x/currency should return collection', function (done) {
-        var user = data.user[0].id,
-            currencies = [ data.user_currencies[0], data.user_currencies[1] ];
-        request(mock)
-            .get('/user/' + user + '/currency')
-            .expect(200)
-            .end(function(err, res){
-                debugger;
-                var result = res.body;
-                assert.deepEqual(currencies, result, "Response does not match");
-                done(err);
-            });
+    describe('GET', function () {
+        it('should return collection segment', function (done) {
+            var user = data.user[0].id,
+                expected = [
+                    {
+                        name: 'imdisabled',
+                        type: 2,
+                        disabled: true,
+                        id: 2,
+                        value: 100,
+                        extra: { value: 100 } },
+                    { name: 'logins',
+                        type: 2,
+                        disabled: false,
+                        id: 3,
+                        value: 2,
+                        extra: { value: 2 } } ];
+            request(mock)
+                .get('/user/' + user + '/currency')
+                .expect(200)
+                .end(function(err, res){
+                    if (err) {
+                        return done(err);
+                    }
+                    var result = res.body;
+                    assert.deepEqual(expected, result, "Response does not match");
+                    done(err);
+                });
+        });
     });
 
-    it('GET /user/x/currency/y should return connected currency', function (done) {
-        var user = data.user_currencies[0].user_id,
-            currency = data.user_currencies[0].currencies_id;
-        request(mock)
-            .get('/user/' + user + '/currency/' + currency)
-            .expect(200)
-            .end(function(err, res){
-                var result = res.body;
-                assert.deepEqual({}, result, "Response does not match");
-                done(err);
-            });
+    describe('GET /:id', function () {
+        it('should return connected item', function (done) {
+            var user = data.user_currencies[0].user_id,
+                expected = [ { name: 'imdisabled',
+                    type: 2,
+                    disabled: true,
+                    id: 2,
+                    value: 100,
+                    extra: { value: 100 } } ];
+            request(mock)
+                .get('/user/' + user + '/currency/' + 2)
+                .expect(200)
+                .end(function(err, res){
+                    if (err) {
+                        return done(err);
+                    }
+                    var result = res.body;
+                    assert.deepEqual(expected, result, "Response does not match");
+                    done(err);
+                });
+        });
     });
-
-
 
 });

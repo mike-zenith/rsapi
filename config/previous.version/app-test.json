@@ -1,10 +1,10 @@
 {
 
     "orm": {
-        "uri": "sqlite://test/data/rsapi.test.sqlite?mode=memory&cache=shared",
+        "connect": "sqlite://test/data/rsapi.test.sqlite?mode=memory&cache=shared",
         "settings": {
-            "connection.pool": false,
-            "connection.debug": true,
+            "connection.pool": true,
+            "connection.debug": false,
             "instance.cache": false,
             "instance.autoSave": false,
             "instance.returnAllErrors": true

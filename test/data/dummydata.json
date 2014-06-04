@@ -22,19 +22,19 @@
     "currency": [
         {
             "name": "songs",
-            "type": "public",
+            "type": 1,
             "disabled": false,
             "id": 1
         },
         {
             "name": "imdisabled",
-            "type": "othertype",
+            "type": 2,
             "disabled": true,
             "id": 2
         },
         {
             "name": "logins",
-            "type": "public",
+            "type": 2,
             "id": 3
         }
     ],

@@ -1,7 +1,7 @@
 'use strict';
 
 var runner = require('./../lib/task/db'),
-    config = require('kraken-js/lib/util/configutil');
+    config = require('kraken-js/lib/config');
 
 module.exports = function migration(grunt) {
     // Load task
@@ -9,17 +9,17 @@ module.exports = function migration(grunt) {
         var cfgPath,
             done = this.async(),
             options,
-            uri,
+            connect,
             nconf;
 
         cfgPath = grunt.option('config-path') || 'config';
         if (grunt.file.isDir(cfgPath)) {
             nconf = config.create(__dirname + '/../');
-            uri = nconf.get('orm:uri');
+            connect = nconf.get('orm:connect');
         }
 
         options = this.options({
-            'uri': uri
+            'connect': connect
         });
         runner(operation, options, grunt, done);
     });

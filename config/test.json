@@ -1,0 +1,50 @@
+{
+    "express": {
+        "view cache": false,
+        "view engine": "dust",
+        "views": "path:./public/templates"
+    },
+
+    "view engines": {
+        "dust": {
+            "module": "engine-munger",
+            "renderer": {
+                "method": "dust",
+                "arguments": [
+                    { "cache": false },
+                    {
+                        "views": "config:express.views",
+                        "view engine": "config:express.view engine",
+                        "specialization": "config:specialization",
+                        "i18n": "config:i18n"
+                    }
+                ]
+            }
+        }
+    },
+
+    "database": {
+        "connect": "sqlite://test/data/rsapi.test.sqlite?mode=memory"
+    },
+
+    "middleware": {
+        "fileNotFound": {
+            "enabled": false
+        },
+
+        "serverError": {
+            "enabled": false
+        },
+
+        "dummydataprovider": {
+            "enabled": true,
+            "priority": 5,
+            "module": {
+                "name": "path:./test/data/provider",
+                "method": "middleware",
+                "arguments": [ "import:../test/data/dummydata.json"]
+            }
+        }
+    }
+
+}

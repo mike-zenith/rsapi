@@ -11,28 +11,36 @@
             disabled: { type: 'boolean' }
         },
         'user': {
-            id: { type: 'integer', primary: true, serial: true }
+            id: { type: 'integer', primary: true, serial: true },
+            credits: { type: 'integer', required: false, size: 8 }
         },
         'rule': {
             id: { type: 'integer', primary: true, serial: true },
             parent_id: { type: 'integer', required: false },
-            badge_id: { type: 'integer' },
             currency_id: { type: 'integer' },
             disabled: { type: 'boolean', defaultValue: false },
-            value: { type: 'integer', size: 4, required: true },
+            currency_value: { type: 'integer', size: 4, required: true },
+            credit_value: { type: 'integer', size: 4, required: true },
             name: { type: 'text', size: 32, required: true },
             activeFrom: { type: 'date', time: true },
             activeUntil: { type: 'date', time: true }
         },
         'user_currencies': {
-            currencies_id: { type: 'integer', required: true },
-            user_id: { type: 'integer', required: true },
+            currencies_id: { type: 'integer', required: true, key: true },
+            user_id: { type: 'integer', required: true, key: true},
             value: { type: 'integer', defaultValue: 0, required: true }
         },
         'user_badges': {
-            badges_id: { type: 'number', required: true },
-            user_id: { type: 'number', required: true },
+            badges_id: { type: 'number', required: true, key: true},
+            user_id: { type: 'number', required: true, key: true},
+            claimed: { type: 'boolean', defaultValue: false },
+            claimed_date: { type: 'date', time: true },
             date: { type: 'date', time: true }
+        },
+        'badge_rules': {
+            badge_id: { type: 'integer', required: true, key: true},
+            rules_id: { type: 'integer', required: true, key: true},
+            level: { type: 'integer', defaultValue: 1, size: 2 }
         }
     },
     len = Object.keys(schema).length,

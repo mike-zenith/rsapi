@@ -8,11 +8,13 @@ module.exports = function (grunt) {
         configDir: require('path').resolve('tasks')
     });
 
-    var env = grunt.option('environment') || 'build';
+    var env = grunt.option('environment') || 'build',
+        mocha = grunt.option('mocha') || 'spec';
 
     // Register group tasks
-    grunt.registerTask('build', [ 'env:build', 'jshint', 'less', 'copyto', 'i18n' ]);
-    grunt.registerTask('test', [ 'env:test', 'jshint', 'mochacli', 'clean:tmp' ]);
+    grunt.registerTask('build', [ 'env:build', 'jshint', 'less', 'i18n',  'copyto' ]);
+    grunt.registerTask('test', [ 'env:test', 'jshint', 'mochacli:' + mocha,]);
+    grunt.registerTask('test:local', [ 'env:local', 'jshint', 'mochacli:' + mocha, 'clean:tmp' ]);
 
     grunt.registerTask('migrate:generate', ['env:' + env, 'migration:generate']);
     grunt.registerTask('migrate:up', ['env:' + env, 'migration:up']);
