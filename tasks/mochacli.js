@@ -8,7 +8,7 @@ module.exports = function mochacli(grunt) {
 	// Options
 	return {
 	    options: {
-	        timeout: 3000,
+	        timeout: 5000,
             colors: true,
             recursive: false,
 	        'check-leaks': true,

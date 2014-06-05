@@ -10,7 +10,7 @@ var kraken = require('kraken-js'),
     assert = require('assert'),
     extend = require('node.extend');
 
-describe('Location: /event', function () {
+describe.only('Location: /event', function () {
 
     var app,
         mock;
@@ -36,7 +36,7 @@ describe('Location: /event', function () {
     });
 
     describe('POST', function () {
-        it('should add event', function (done) {
+        it('should run without errors', function (done) {
             var send = {
                 'user_id': 1,
                 'currency_id': 2
@@ -46,13 +46,21 @@ describe('Location: /event', function () {
                 .set('Accept', 'application/json')
                 .expect(200)
                 .send(send)
-                .end(function (err, res) {
-                    if (err) {
-                        done(err);
-                        return;
-                    }
-                    done(err);
-                });
+                .end(done);
         });
+        /*
+        it('should run without errors', function (done) {
+            var send = {
+                'user_id': 1,
+                'currency_id': 2
+            };
+            request(mock)
+                .post('/event')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .send(send)
+                .end(done);
+        });
+        */
     });
 });

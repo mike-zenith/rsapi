@@ -10,7 +10,7 @@ function middleware (data) {
     var keys = Object.keys(data);
 
     return function(req, res, next) {
-        var db, dfd = Q(1);
+        var db, dfd = Q();
         if (req.db && req.db.length) {
             db = req.db[Object.keys(req.db)[0]].driver;
         } else if(req.db && req.db.clear) {
@@ -36,14 +36,13 @@ function middleware (data) {
                 return;
             }
 
-            var model = req.models[key],
-                rows = extend(true, data[key]);
+            var model = req.models[key];
 
             dfd = dfd
                 .then(modelService.promise(model, 'drop'))
                 .then(modelService.promise(model, 'sync'));
 
-            rows.forEach(function (record) {
+            data[key].forEach(function (record) {
                 dfd = dfd.then(modelService.promise(model, 'create', [record]));
             });
         });

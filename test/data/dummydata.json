@@ -38,6 +38,21 @@
             "id": 3
         }
     ],
+    "rule": [
+        {
+            "currency_id": 2,
+            "credit_value": 10,
+            "currency_value": 5,
+            "name": "cid#2, c10, u5"
+        },
+        {
+            "currency_id": 3,
+            "credit_value": 8,
+            "currency_value": 2,
+            "name": "cid#3, c8, u2"
+        }
+    ],
+
     "user_currencies": [
         {
             "user_id": 1,
