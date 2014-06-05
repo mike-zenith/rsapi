@@ -9,7 +9,7 @@ module.exports = function (grunt) {
     });
 
     var env = grunt.option('environment') || 'build',
-        mocha = grunt.option('mocha') || 'spec';
+        mocha = grunt.option('mocha') || grunt.option('spec') || 'spec';
 
     // Register group tasks
     grunt.registerTask('build', [ 'env:build', 'jshint', 'less', 'i18n',  'copyto' ]);

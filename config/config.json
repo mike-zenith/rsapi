@@ -115,20 +115,12 @@
 
         "errorlogger": {
             "enabled": true,
-            "priority": 0,
+            "priority": 400,
             "module": {
                 "name": "path:./lib/middleware/error",
                 "arguments": [ "config:errorhandler"]
             }
-        },
-
-        "overwriteroute": {
-            "enabled": true,
-            "module": {
-                "name": "path:./lib/middleware/overwriteroute"
-            }
         }
-
     }
 
 }

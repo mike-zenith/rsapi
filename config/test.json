@@ -24,10 +24,19 @@
     },
 
     "database": {
-        "connect": "sqlite://test/data/rsapi.test.sqlite?mode=memory"
+        "connect": "sqlite://test/data/rsapi.test.sqlite?mode=memory&debug=true"
     },
 
     "middleware": {
+        "shutdown": {
+            "module": {
+                "arguments": [{
+                    "timeout": 5000,
+                    "template": null
+                }]
+            }
+        },
+
         "fileNotFound": {
             "enabled": false
         },

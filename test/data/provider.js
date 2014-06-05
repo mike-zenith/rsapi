@@ -2,33 +2,15 @@
 
 var timer = require('timers'),
     util = require('util'),
+    Q = require('q'),
+    modelService = require('../../lib/service/models'),
     extend = require('node.extend');
 
 function middleware (data) {
-    var keys = Object.keys(data),
-        len = 0,
-        err = null,
-        cntr = 0,
-        progress = false,
-        loaded = false;
+    var keys = Object.keys(data);
 
-    keys.forEach(function (l) {
-        if (util.isArray(data[l])) {
-            len += data[l].length;
-        }
-    });
     return function(req, res, next) {
-        if (loaded) {
-            return next();
-        }
-
-        var cb, db;
-
-        if (progress) {
-            return;
-        }
-        progress = true;
-
+        var db, dfd = Q(1);
         if (req.db && req.db.length) {
             db = req.db[Object.keys(req.db)[0]].driver;
         } else if(req.db && req.db.clear) {
@@ -37,21 +19,9 @@ function middleware (data) {
             db = req.db.driver;
         }
 
-        cb = function (e) {
-            cntr ++;
-            if (e) {
-                console.error("data-provider error", e);
-                next(e);
-            }
-            err = err || e;
-            if (cntr === len) {
-                loaded = true;
-                next(err);
-            }
-        };
-
         keys.forEach(function (key) {
             if (~key.indexOf('_')) {
+                return;
                 db.clear(key, (function (key, rows) {
                     return function (err) {
                         if (err) {
@@ -68,17 +38,20 @@ function middleware (data) {
 
             var model = req.models[key],
                 rows = extend(true, data[key]);
-            if (!model) {
-                cb();
-                return;
-            }
 
-            model.clear(function () {
-                rows.forEach(function (record) {
-                    model.create(record, cb);
-                });
+            dfd = dfd
+                .then(modelService.promise(model, 'drop'))
+                .then(modelService.promise(model, 'sync'));
+
+            rows.forEach(function (record) {
+                dfd = dfd.then(modelService.promise(model, 'create', [record]));
             });
         });
+        dfd.then(
+            function () { next(null); },
+            function (e) { next(e); })
+            .done();
+
     }
 }
 
@@ -91,7 +64,6 @@ var Provider = {
                 if (err) {
                     return next(err, config);
                 }
-                console.log(config.get('path'));
                 config.set('middleware:dummydataprovider', {
                     "enabled": true,
                     "priority": 200,

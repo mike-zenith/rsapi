@@ -8,7 +8,7 @@ var kraken = require('kraken-js'),
 
 app.use(kraken(options));
 
-app.listen(port, function (err) {
+module.exports = app.listen(port, function (err) {
     if (err) {
         console.error(err.stack);
     }
