@@ -21,7 +21,7 @@
     "migrate-orm2": "git://github.com/mike-zenith/node-migrate-orm2",
     "mysql": "~2.0.0-alpha9",
     "node.extend": "^1.0.10",
-    "orm": "git://github.com/mike-zenith/node-orm2#patch-2",
+    "orm": "^2.1.15",
     "q": "^1.0.1"
   },
   "devDependencies": {

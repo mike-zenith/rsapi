@@ -43,13 +43,25 @@
             "currency_id": 2,
             "credit_value": 10,
             "currency_value": 5,
+            "badge_id": 3,
+            "level": 1,
             "name": "cid#2, c10, u5"
         },
         {
+            "currency_id": 2,
+            "credit_value": 20,
+            "currency_value": 10,
+            "badge_id": 3,
+            "level": 2,
+            "name": "cid#2, c20, u10"
+        },
+        {
             "currency_id": 3,
-            "credit_value": 8,
-            "currency_value": 2,
-            "name": "cid#3, c8, u2"
+            "credit_value": 1,
+            "currency_value": 10,
+            "badge_id": 4,
+            "level": 1,
+            "name": "cid#3, c1, u10"
         }
     ],
 

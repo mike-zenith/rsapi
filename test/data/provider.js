@@ -21,25 +21,23 @@ function middleware (data) {
 
         keys.forEach(function (key) {
             if (~key.indexOf('_')) {
-                return;
-                db.clear(key, (function (key, rows) {
-                    return function (err) {
-                        if (err) {
-                            cb(err);
-                            return;
-                        }
-                        rows.forEach(function (record) {
-                            db.insert(key, record, null, cb);
-                        });
-                    }
-                })(key, extend(true, data[key])));
+                dfd = dfd.then(function () {
+                    return Q.ninvoke(db, 'clear', key);
+                });
+                data[key].forEach(function (record) {
+                    dfd = dfd.then(function () {
+                        return Q.ninvoke(db, 'insert', key, record, null);
+                    });
+                });
+
                 return;
             }
 
             var model = req.models[key];
-
             dfd = dfd
-                .then(modelService.promise(model, 'drop'))
+                .then(function () {
+                    return Q.ninvoke(db, 'clear', key);
+                })
                 .then(modelService.promise(model, 'sync'));
 
             data[key].forEach(function (record) {

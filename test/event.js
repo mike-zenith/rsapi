@@ -39,7 +39,7 @@ describe.only('Location: /event', function () {
         it('should run without errors', function (done) {
             var send = {
                 'user_id': 1,
-                'currency_id': 2
+                'currency_id': 3
             };
             request(mock)
                 .post('/event')
@@ -48,19 +48,5 @@ describe.only('Location: /event', function () {
                 .send(send)
                 .end(done);
         });
-        /*
-        it('should run without errors', function (done) {
-            var send = {
-                'user_id': 1,
-                'currency_id': 2
-            };
-            request(mock)
-                .post('/event')
-                .set('Accept', 'application/json')
-                .expect(200)
-                .send(send)
-                .end(done);
-        });
-        */
     });
 });
