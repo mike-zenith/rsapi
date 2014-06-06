@@ -4,21 +4,16 @@
 
 
 var kraken = require('kraken-js'),
-    util = require('util'),
     express = require('express'),
     request = require('supertest'),
     spec = require('../lib/spec'),
     assert = require('assert'),
     extend = require('node.extend');
 
-describe('Location: /event', function () {
+describe.only('Location: /claim', function () {
 
     var app,
         mock;
-
-    before(function () {
-
-    });
 
     beforeEach(function (done) {
         app = express();
@@ -37,38 +32,33 @@ describe('Location: /event', function () {
     });
 
     describe('POST', function () {
-        it('should run without errors', function (done) {
+        it('should claim the given badge', function (done) {
             var send = {
-                'user_id': 1,
-                'currency_id': 3
-            };
+                    user_id: 1,
+                    badge_id: 3,
+                    rule_id: 1
+                };
+
             request(mock)
-                .post('/event')
+                .post('/claim')
                 .set('Accept', 'application/json')
-                .expect(200)
                 .send(send)
+                .expect(200)
                 .end(done);
         });
-
-        it('should add Badge depending on the Rules', function (done) {
+        it('should return 409 on already claimed badges', function (done) {
             var send = {
-                'user_id': 2,
-                'currency_id': 1,
-                'value': 2
-            };
+                    user_id: 2,
+                    badge_id: 3,
+                    rule_id: 2
+                };
             request(mock)
-                .post('/event')
+                .post('/claim')
                 .set('Accept', 'application/json')
-                .expect(200)
                 .send(send)
-                .end(function (err, res) {
-                    if (err) {
-                        return done(err);
-                    }
-                    assert.equal(res.body.earned, 1, 'Did not add badge');
-                    done();
-                });
+                .expect(409)
+                .end(done);
         });
-
     });
+
 });

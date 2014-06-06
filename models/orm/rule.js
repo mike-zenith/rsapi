@@ -6,7 +6,7 @@ module.exports = function (db) {
         disabled: { type: 'boolean', defaultValue: false },
         currency_value: { type: 'integer', size: 4, required: true },
         credit_value: { type: 'integer', size: 4, required: true },
-        level: { type: 'integer', size: 1, defaultValue: 1 },
+        level: { type: 'integer', size: 2, defaultValue: 1 },
         name: { type: 'text', size: 32, required: true },
         activeFrom: { type: 'date', time: true },
         activeUntil: { type: 'date', time: true }

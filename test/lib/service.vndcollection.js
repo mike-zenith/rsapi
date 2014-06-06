@@ -215,7 +215,6 @@ describe('#lib/service/vndcollection', function () {
 
     it('.itemSkeleton : generates skeleton from orm record', function (done) {
         conn().done(function (db) {
-            debugger;
             var schemaUser = {
                     id: {
                         type: 'serial',

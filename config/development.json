@@ -24,33 +24,26 @@
         }
     },
 
+    "database": {
+        "modelsPath": "path:./models/orm",
+        "connect": "mysql://rsapi:rsapi1234@localhost/rsapi?debug=true",
+        "settings": {
+            "connection.pool": true,
+            "connection.debug": true,
+            "instance.cache": false,
+            "instance.autoFetch": false,
+            "instance.autoSave": false,
+            "instance.returnAllErrors": true
+        }
+    },
+
     "middleware": {
-        "devtools": {
-            "enabled": true,
-            "priority": 35,
-            "module": {
-                "name": "kraken-devtools",
-                "arguments": [
-                    "path:./public",
-                    "path:./.build",
-                    {   
-                        "template": {
-                            "module": "kraken-devtools/plugins/dustjs",
-                            "files": "/templates/**/*.js",
-                            "base": "templates",
-                            "i18n": "config:i18n"
-                        },
-                        "css": {
-                            "module": "kraken-devtools/plugins/less",
-                            "files": "/css/**/*.css"
-                        },
-                        "copier": {
-                            "module": "kraken-devtools/plugins/copier",
-                            "files": "**/*"
-                        }
-                    }
-                ]
-            }
+        "fileNotFound": {
+            "enabled": false
+        },
+
+        "serverError": {
+            "enabled": false
         }
     }
 }

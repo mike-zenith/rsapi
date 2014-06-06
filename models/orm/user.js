@@ -18,15 +18,15 @@ module.exports = function (db) {
 
         db.models.user.hasMany(
             'badges',
-            db.models.badge,
+            db.models.rule,
             {
                 date: {type: 'date', time: true},
                 claimed: {type: 'boolean', defaultValue: false},
-                claimed_date: {type: 'date', time: true},
-                rule_id: {type: 'integer', size: 4, key: true, required: true}
+                claimed_date: {type: 'date', time: true}
             },
             {
                 reverse: 'user',
+                mergeAssocId: 'rule_id',
                 hooks: {
                     beforeSave: function (extra, next) {
                         // @todo composite unique key test
@@ -37,5 +37,6 @@ module.exports = function (db) {
                     }
                 }
             });
+
     };
 };
