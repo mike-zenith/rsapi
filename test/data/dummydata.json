@@ -56,15 +56,15 @@
             "name": "cid#2, c20, u10"
         },
         {
-            "currency_id": 3,
-            "credit_value": 1,
+            "currency_id": 1,
+            "credit_value": 5,
             "currency_value": 10,
             "badge_id": 4,
             "level": 1,
-            "name": "cid#3, c1, u10"
+            "name": "cid#1, c5, u10"
         }
     ],
-
+    "user_badges": [],
     "user_currencies": [
         {
             "user_id": 1,
@@ -79,7 +79,7 @@
         {
             "user_id": 2,
             "currencies_id": 1,
-            "value": 41
+            "value": 8
         }
     ]
 }

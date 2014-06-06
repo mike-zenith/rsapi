@@ -21,12 +21,12 @@ This is a private(ish) repo.
 - npm start (Runs the application -- NOT FUNCTIONAL)
 
 You can modify application settings by changing
-- config/app.json
-- config/middleware.json
+- config/config.json
 
 Create / change env-specific settings 
-- config/app-[env].json
-- config/middleware-[env].json
+- config/[env].json
+
+where [env] : dev[elopment], prod[uction], test[ing] ... (kraken.js documentation)
 ```
 
 Configuration is based on kraken's nconf integration, it first loads the base config (config/app.json) then looks for the env specific one (config/app-test.json) .
@@ -153,6 +153,10 @@ One should not use it to test his code, the proper way is:
 $ grunt test
 OR
 $ npm test
+
+$ grunt test --[spec|mocha] min
+Runs the tests with specific mochacli settings where 'min' is the settings key,
+check tasks/mochacli.js
 ```
 
 
@@ -317,7 +321,7 @@ opts = {
 };
 
 module.exports = Rest('/user', opts)
-    .generate(['param:model', 'routes:item', 'routes:collection']);
+    .generate();
 ```
 
 

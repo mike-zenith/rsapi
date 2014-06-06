@@ -14,12 +14,7 @@ module.exports = function (db) {
             'currencies',
             db.models.currency,
             { value: { type: 'integer', size: 4 } },
-            { reverse: 'users', hooks: {
-                beforeSave: function (extra, next) {
-                    console.log('OKE?');
-                    return next();
-                }
-            }});
+            { reverse: 'user' });
 
         db.models.user.hasMany(
             'badges',
@@ -27,8 +22,20 @@ module.exports = function (db) {
             {
                 date: {type: 'date', time: true},
                 claimed: {type: 'boolean', defaultValue: false},
-                claimed_date: {type: 'date', time: true}
+                claimed_date: {type: 'date', time: true},
+                rule_id: {type: 'integer', size: 4, key: true, required: true}
             },
-            { reverse: 'users'});
+            {
+                reverse: 'user',
+                hooks: {
+                    beforeSave: function (extra, next) {
+                        // @todo composite unique key test
+                        if (!extra || !extra.rule_id) {
+                            return next();
+                        }
+                        next();
+                    }
+                }
+            });
     };
 };
