@@ -10,7 +10,7 @@ var kraken = require('kraken-js'),
     assert = require('assert'),
     extend = require('node.extend');
 
-describe.only('Location: /claim', function () {
+describe('Location: /claim', function () {
 
     var app,
         mock;

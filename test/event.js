@@ -70,5 +70,66 @@ describe('Location: /event', function () {
                 });
         });
 
+        it('should create new user and add currency when not found', function (done) {
+            var send = {
+                'user_id': 999,
+                'currency_id': 3
+            };
+            request(mock)
+                .post('/event')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .send(send)
+                .end(done);
+        });
+
+        it('should give 404 when currency not found', function (done) {
+            var send = {
+                'user_id': 1,
+                'currency_id': 9999
+            };
+            request(mock)
+                .post('/event')
+                .set('Accept', 'application/json')
+                .expect(404)
+                .send(send)
+                .end(done);
+
+        });
+
+        it('should give 404 when currency and user not found', function (done) {
+            var send = {
+                'user_id': 9123,
+                'currency_id': 9999
+            };
+            request(mock)
+                .post('/event')
+                .set('Accept', 'application/json')
+                .expect(404)
+                .send(send)
+                .end(done);
+
+        });
+
+        it.only('should add connected missing currency to the user and credit badges', function (done) {
+            var send = {
+                'user_id': 1,
+                'currency_id': 3,
+                'value': 200
+            };
+            request(mock)
+                .post('/event')
+                .set('Accept', 'application/json')
+                .expect(200)
+                .send(send)
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    assert.equal(res.body.earned, 1, 'Did not credit the badge');
+                    done(err);
+                });
+        });
+
     });
 });

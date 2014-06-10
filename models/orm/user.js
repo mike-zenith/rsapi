@@ -1,5 +1,7 @@
 'use strict';
 
+var models = require ('../../lib/service/models');
+
 module.exports = function (db) {
 
     db.define('user', {

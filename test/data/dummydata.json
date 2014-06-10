@@ -62,6 +62,14 @@
             "badge_id": 4,
             "level": 1,
             "name": "cid#1, c5, u10"
+        },
+        {
+            "currency_id": 3,
+            "credit_value": 100,
+            "currency_value": 200,
+            "badge_id": 4,
+            "level": 1,
+            "name": "cid#3, c100, u200"
         }
     ],
 

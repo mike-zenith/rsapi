@@ -31,7 +31,8 @@ var user_badge = {
         model: 'badge',
         assoc: {
             register: 'user',
-            method: 'badges'
+            method: 'badges',
+            param: 'rule_id'
         }
     }
 };
