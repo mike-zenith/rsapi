@@ -26,10 +26,10 @@
 
     "database": {
         "modelsPath": "path:./models/orm",
-        "connect": "mysql://rsapi:rsapi1234@localhost/rsapi?debug=true",
+        "connect": "mysql://rsapi:rsapi1234@localhost/rsapi",
         "settings": {
             "connection.pool": true,
-            "connection.debug": true,
+            "connection.debug": false,
             "instance.cache": false,
             "instance.autoFetch": false,
             "instance.autoSave": false,

@@ -24,7 +24,7 @@
     },
 
     "database": {
-        "connect": "sqlite://test/data/rsapi.test.sqlite?mode=memory&debug=true"
+        "connect": "sqlite://test/data/rsapi.test.sqlite?mode=memory"
     },
 
     "middleware": {
