@@ -139,7 +139,7 @@ General optional parameters:
 ### Mocha , Mocha-cli
 Mocha is our test-runner. It provides basic functionality over tdd / bdd tests.
 
-[Mocha homepage](http://visionmedia.github.io/mocha/)
+[Mocha homepage](http://mochajs.org/)
 [Grunt task source](https://github.com/Rowno/grunt-mocha-cli)
 
 The tests can be found at test/*. Currently it does not use sub-directories
